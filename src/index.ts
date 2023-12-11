@@ -3,7 +3,7 @@ import { env } from './env';
 const { TOKEN } = env;
 
 import { Client, GatewayIntentBits } from 'discord.js';
-import { importCommands } from './register';
+import { importCommands } from './commands';
 import { Worker } from 'worker_threads';
 import { CommandError } from './types';
 
