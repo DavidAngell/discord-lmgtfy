@@ -1,5 +1,10 @@
 import { env } from './env';
 
+if (env.err) {
+  console.error(env.val);
+  process.exit(1);
+}
+
 const { TOKEN } = env.unwrap();
 
 import { Client, GatewayIntentBits } from 'discord.js';

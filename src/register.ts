@@ -5,6 +5,11 @@ import { Collection, REST, Routes } from 'discord.js';
 import { env } from './env';
 import { Command } from './command';
 
+if (env.err) {
+  console.error(env.val);
+  process.exit(1);
+}
+
 const { CLIENT_ID, TOKEN } = env.unwrap();
 
 // Import all the commands from the commands folder
