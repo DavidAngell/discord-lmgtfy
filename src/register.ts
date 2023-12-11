@@ -3,25 +3,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { Collection, REST, Routes } from 'discord.js';
 import { env } from './env';
-import { Command } from './command';
+import { Command } from './types';
 
-if (env.err) {
-  console.error(env.val);
-  process.exit(1);
-}
-
-const { CLIENT_ID, TOKEN } = env.unwrap();
+const { CLIENT_ID, TOKEN } = env;
 
 // Import all the commands from the commands folder
 export async function importCommands(): Promise<Collection<string, Command>> {
   const commands = new Collection<string, Command>();
 
   const foldersPath = path.join(__dirname, 'commands');
-  console.log(foldersPath);
-
-  console.log("Reading commands folder")
   const commandsFolder = fs.readdirSync(foldersPath);
-  
   for (const file of commandsFolder.filter(file => file.endsWith('.js'))) {
     const filePath = path.join(foldersPath, file);
 
@@ -48,6 +39,7 @@ importCommands().then(async commandsCollection => {
   // Log the commands
   console.log("Commands found:");
   commandsCollection.forEach(command => console.log(`- ${command.data.name}: ${command.data.description}`));
+  console.log();
 
   // Convert the commands collection to an array
   const commands = commandsCollection.map(command => command.data.toJSON());

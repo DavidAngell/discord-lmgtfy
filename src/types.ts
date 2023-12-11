@@ -2,5 +2,5 @@ import { CacheType, ChatInputCommandInteraction, SlashCommandBuilder } from "dis
 
 export type Command = {
     data: SlashCommandBuilder,
-    execute: (interaction: ChatInputCommandInteraction<CacheType>) => void,
+    execute: (interaction: ChatInputCommandInteraction<CacheType>) => Promise<void>,
 };

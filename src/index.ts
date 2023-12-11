@@ -1,23 +1,17 @@
 import { env } from './env';
 
-if (env.err) {
-  console.error(env.val);
-  process.exit(1);
-}
-
-const { TOKEN } = env.unwrap();
+const { TOKEN } = env;
 
 import { Client, GatewayIntentBits } from 'discord.js';
 import { importCommands } from './register';
+import { Worker } from 'worker_threads';
 
 importCommands().then(async commands => {
   const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] 
   });
 
-  client.on('ready', () => {
-    console.log(`Logged in as ${client.user?.tag}!`);
-  });
+  client.on('ready', () => console.log(`Logged in as ${client.user?.tag}!`));
 
   client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
@@ -27,12 +21,7 @@ importCommands().then(async commands => {
       return;
     }
 
-    try {
-      commands.get(interaction.commandName)?.execute(interaction);
-    } catch (error) {
-      console.error(error);
-      await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
-    }
+    commands.get(interaction.commandName)?.execute(interaction);
   });
 
   client.login(TOKEN);
